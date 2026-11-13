@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>حاسبة</title>
+<style>
+body{font-family:sans-serif;background:#222;margin:0;padding:16px}
+#screen{width:100%;box-sizing:border-box;font-size:2em;text-align:left;direction:ltr;padding:16px;margin-bottom:12px;border:0;border-radius:8px}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;direction:ltr}
+button{font-size:1.5em;padding:18px;border:0;border-radius:8px;background:#444;color:#fff}
+button.op{background:#f90}
+</style>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#222222">
+</head>
+<body>
+<input id="screen" readonly value="0">
+<div class="grid">
+<button onclick="clr()">C</button>
+<button onclick="add('(')">(</button>
+<button onclick="add(')')">)</button>
+<button class="op" onclick="add('/')">÷</button>
+<button onclick="add('7')">7</button>
+<button onclick="add('8')">8</button>
+<button onclick="add('9')">9</button>
+<button class="op" onclick="add('*')">×</button>
+<button onclick="add('4')">4</button>
+<button onclick="add('5')">5</button>
+<button onclick="add('6')">6</button>
+<button class="op" onclick="add('-')">−</button>
+<button onclick="add('1')">1</button>
+<button onclick="add('2')">2</button>
+<button onclick="add('3')">3</button>
+<button class="op" onclick="add('+')">+</button>
+<button onclick="add('0')">0</button>
+<button onclick="add('.')">.</button>
+<button onclick="del()">⌫</button>
+<button class="op" onclick="calc()">=</button>
+</div>
+<script>
+const s=document.getElementById('screen');
+function add(v){s.value=(s.value==='0'||s.value==='خطأ')?v:s.value+v}
+function clr(){s.value='0'}
+function del(){s.value=s.value.slice(0,-1)||'0'}
+function calc(){
+  try{
+    if(!/^[0-9+\-*/().\s]+$/.test(s.value))throw 0;
+    s.value=String(Function('"use strict";return ('+s.value+')')());
+  }catch(e){s.value='خطأ'}
+}
+if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js')}
+</script>
+</body>
+</html>
